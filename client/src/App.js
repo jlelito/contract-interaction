@@ -52,10 +52,9 @@ class App extends Component {
   //Loads the data of the smart-contract
   async loadContractData() {
     let contractAdmin
-    let CountData = Count.networks[5777]
-    let ContractCallerData = ContractCaller.networks[5777]
+    let CountData = Count.networks[3]
+    let ContractCallerData = ContractCaller.networks[3]
     if(CountData) {
-
       //Load contract and set state
       const abi = Count.abi
       const address = CountData.address
@@ -73,8 +72,8 @@ class App extends Component {
       //Load contract and set state
       const abi = ContractCaller.abi
       const address = ContractCallerData.address
-      const countContract = new this.state.web3.eth.Contract(abi, address)
-      await this.setState({ callerContract : countContract })
+      const callerContract = new this.state.web3.eth.Contract(abi, address)
+      await this.setState({ callerContract, callerContractAddress: address })
 
     }
 
@@ -129,6 +128,8 @@ class App extends Component {
       isConnected: null,
       countContract: {},
       callerContract: {},
+      countContractAddress: null,
+      callerContractAddress: null,
       count: null,
       currentEthBalance: '0',
       hash: '0x0',
@@ -195,6 +196,15 @@ class App extends Component {
         <button className='btn btn-primary' onClick={() => this.increment()}>Increment</button>
       </>
       }
+
+          <div className='row justify-content-center mt-4'>
+              Count Contract on Etherscan: 
+            <a className='ml-3' href={`https://ropsten.etherscan.io/address/${this.state.countContractAddress}`} target='_blank'>Etherscan</a>
+          </div>
+          <div className='row justify-content-center mt-4'>
+              Count Caller Contract on Etherscan: 
+            <a className='ml-3' href={`https://ropsten.etherscan.io/address/${this.state.callerContractAddress}`} target='_blank'>Etherscan</a>
+          </div>
     </div>
     );
   }
